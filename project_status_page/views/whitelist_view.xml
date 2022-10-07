@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright © 2022 Novobi, LLC. See LICENSE file for full copyright and licensing details. -->
+
+<odoo>
+    <!--############################## VIEWS ##############################-->
+
+     <record id="whitelist_view_tree" model="ir.ui.view">
+        <field name="name">White List</field>
+        <field name="model">whitelist</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="white_domain"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="whitelist_view_form" model="ir.ui.view">
+        <field name="name">White List</field>
+        <field name="model">whitelist</field>
+        <field name="arch" type="xml">
+            <form string="white domain list">
+                <sheet>
+                    <label for="white_domain" string="White Domain"/>
+                    <h2>
+                        <field name="white_domain"/>
+                    </h2>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

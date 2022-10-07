@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright © 2022 Novobi, LLC. See LICENSE file for full copyright and licensing details. -->
+
+<odoo>
+    <!--############################## VIEWS ##############################-->
+    <record id="status_page_users_view_tree_inherited" model="ir.ui.view">
+        <field name="name">Status page users list inherited</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_tree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="email"/>
+                <field name="notification_enabled"/>
+                <field name="total_subscribed_domain"/>
+            </field>
+            <field name="login" position="replace" invisible="1"/>
+            <field name="lang" position="replace" invisible="1"/>
+            <field name="login_date" position="replace" invisible="1"/>
+        </field>
+    </record>
+
+    <record id="status_page_users_form_view_inherited" model="ir.ui.view">
+        <field name="name">Status page user form inherited</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_simple_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='phone_numbers']" position="replace">
+                <label for="notification_enabled" string="Notification"/>
+                <h2>
+                    <field name="notification_enabled"/>
+                </h2>
+                <label for="total_subscribed_domain" string="Amount of domain"/>
+                <h2>
+                    <field name="total_subscribed_domain"/>
+                </h2>
+                <label for="url_ids" string="Subscribed to"/>
+                <h2>
+                    <field name="url_ids"/>
+                </h2>
+                <group>
+                    <button name="check_private_domains" type="object" string="Check all"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="status_page_users_view_kanban" model="ir.ui.view">
+        <field name="name">Status page user kanban</field>
+        <field name="model">res.users</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card">
+                            <a type="open">
+                                <strong>
+                                    <field name="name"/>
+                                </strong>
+                            </a>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!--############################## ACTIONS ##############################-->
+    <record id='status_page_users_action' model='ir.actions.act_window'>
+        <field name="name">Users</field>
+        <field name="res_model">res.users</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!--############################## MENUS ##############################-->
+    <menuitem name="Status Page" id="status_page_base_menu" web_icon="project_status_page,static/description/icon.png"/>
+    <menuitem name="Users" id="status_page_users_menu" parent="status_page_base_menu"
+              action="status_page_users_action"/>
+
+</odoo>

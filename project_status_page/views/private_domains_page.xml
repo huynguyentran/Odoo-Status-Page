@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="private_domains_page_form" model="website.menu">
+        <field name="name">Private Domains Page</field>
+        <field name="url">/private-domains</field>
+        <field name="parent_id" ref="website.main_menu"/>
+    </record>
+
+    <template id="private_domains_page" name="Private Domains Page">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <section class="s_text_block o_colored_level pb0 pt64" data-snippet="s_text_block" data-name="Text"
+                         style="background-image: none;">
+                    <div class="s_allow_columns container" align="center">
+                        <form role="form" action="/check" method="POST" style="width:70%;">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <label for="url" style="color:#4995cb;font-size: x-large;" class="control-label">Enter your
+                                URL
+                            </label>
+                            <div>
+                                <div class="inner" align="right" style="width:80%">
+                                    <div class="form group">
+                                        <input type="text" name="url" t-att-value="url" id="url"
+                                               class="form-control" placeholder="e.g. https://www.google.com"
+                                               style="text-align:center;border-radius:7px;"
+                                               required="required" align="center"/>
+                                    </div>
+                                </div>
+                                <div class="inner" align="left">
+                                    <div class="clearfix oe_login_button"
+                                         style="padding:10px;font-family:roboto;">
+                                        <button type="submit" class="btn btn-primary"
+                                                style="border-radius:12px;color:white;background:#f37c21;border:0;padding:4px 10px 5px 10px;margin-bottom:5px;"
+                                                title="Check the domain.">Check
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <style>
+                        table {
+                        border-collapse: separate;
+                        border-spacing: 0;
+                        }
+
+                        td {
+                        border-color: rgba(255, 255, 255, 0.5);;
+                        border-style: none solid solid none;
+                        padding: 10px;
+                        color: #ffffff;
+                        background-color: #0d74bb;
+                        }
+
+                        tr:first-child td:first-child { border-top-left-radius: 10px; }
+                        tr:first-child td:last-child { border-top-right-radius: 10px; }
+
+                        tr:last-child td:first-child { border-bottom-left-radius: 10px; }
+                        tr:last-child td:last-child { border-bottom-right-radius: 10px; }
+
+                        tr:first-child td { border-top-style: solid; }
+                        tr td:first-child { border-left-style: solid; }
+
+                        .inner
+                        {
+                        display: inline-block;
+                        }
+                    </style>
+                    <div align="center" style="margin:5px;color:red;">
+                        <t t-f="error_message != None">
+                            <t t-attf-style="background-color: #4995cb;" t-esc="error_message"/>
+                        </t>
+                        <t t-if="url != None">
+                            <table align="center" style="width:75%;border-radius:12px;height:45px;">
+                                <tbody>
+                                    <tr valign="middle" align="center">
+                                        <td>
+                                            <t t-esc="url"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="ping"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="status"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="last_check"
+                                               t-options='{"widget": "datetime", "hide_seconds": True}'/>
+                                        </td>
+                                        <td>
+                                            <form role="form" action="/domain/add" method="POST"
+                                                  style="width:50%; font-family:'Roboto';">
+                                                <input type="hidden" name="csrf_token"
+                                                       t-att-value="request.csrf_token()"/>
+                                                <div class="form group">
+                                                    <input type="text" name="url" t-att-value="url" id="url"
+                                                           class="form-control" t-value="t-esc='url'"
+                                                           required="required"
+                                                           t-att-style="'display: none;'"
+                                                    />
+                                                </div>
+                                                <div class="clearfix oe_login_button" align="center">
+                                                    <button type="submit" class="fa fa-plus"
+                                                            style="border-radius:12px;background:transparent;color:white;border:0;padding:4px 10px 5px 10px;"
+                                                            title="Save this domain into your list">
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+                    </div>
+                    <div align="center">
+                        <div style="color:#4995cb;font-size: x-large;">
+                            <strong>
+                                Your domains' status list
+                            </strong>
+                        </div>
+                        <div class="p-2 " style="border-radius:15px;width:80%; height:600px;background:#4995cb;">
+                            <div class="row" style="margin-bottom:5px;">
+                                <div class="col-6" align="left">
+                                    <div class="inner">
+                                        <form role="form" t-attf-action="/domain/#{user}/toggle-notification"
+                                              method="POST">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <div class="clearfix oe_login_button" align="left"
+                                                 style="padding-left:25px;">
+                                                <t t-if="not request.env['res.users'].browse(user).notification_enabled">
+                                                    <button type="submit" class="fa fa-bell-o"
+                                                            style="border-radius:12px;color:white;background:#f37c21;border:0;padding:4px 15px 5px 15px;"
+                                                            title="Enable email notification">
+
+                                                    </button>
+                                                </t>
+                                                <t t-if="request.env['res.users'].browse(user).notification_enabled">
+                                                    <button type="submit" class="fa fa-bell"
+                                                            style="border-radius:12px;color:white;background:#f37c21;border:0;padding:4px 15px 5px 15px;"
+                                                            title="Disable email notification">
+                                                    </button>
+                                                </t>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="inner">
+                                        <a href="#" role="button" data-toggle="dropdown"
+                                           t-attf-class="dropdown-toggle #{_link_class}" style="color:white">Filter
+                                        </a>
+                                        <div t-attf-class="dropdown-menu js_usermenu #{_dropdown_menu_class}"
+                                             role="menu">
+                                            <a t-attf-href="/private-domains" role="menuitem"
+                                               class="dropdown-item">No filter
+                                            </a>
+                                            <a t-attf-href="/domain/#{user}/domains-up" role="menuitem"
+                                               class="dropdown-item">Up
+                                            </a>
+                                            <a t-attf-href="/domain/#{user}/domains-down" role="menuitem"
+                                               class="dropdown-item">Down
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="inner" style="color:white;">
+                                        <t t-esc="current_filter"/>
+                                    </div>
+                                </div>
+                                <div class="col-6" align="right">
+                                    <div class="inner">
+                                        <form role="form" action="/domain/refresh-all" method="POST">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <div class="clearfix oe_login_button">
+                                                <button type="submit" class="fa fa-refresh"
+                                                        style="border-radius:12px;color:white;background:#f37c21;border:0;padding:4px 15px 5px 15px;"
+                                                        title="Refresh all domains in your current list."
+                                                >
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="inner">
+                                        <form role="form" action="/domain/delete_all" method="POST">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <div class="clearfix oe_login_button" style="padding-right:45px;">
+                                                <button type="submit" class="fa fa-trash"
+                                                        style="border-radius:12px;color:white;background:#f37c21;border:0;padding:4px 15px 5px 15px;"
+                                                        title="Delete all domains.">
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="overflow-y: auto; max-height:550px;">
+                                <table align="center" style="width:95%;">
+                                    <thead>
+                                        <tr valign="middle" align="center">
+                                            <td style="background-color:#3163af;">
+                                                URL
+                                            </td>
+                                            <td style="background-color:#3163af;">
+                                                STATUS
+                                            </td>
+                                            <td style="background-color:#3163af;">
+                                                PING
+                                            </td>
+                                            <td style="background-color:#3163af;">
+                                                LAST CHECK
+                                            </td>
+                                            <td style="background-color:#3163af;">
+                                                ACTIONS
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="request.env['status.domain'].sudo().search([('subscriber_ids', '=', user)])"
+                                           t-as="d">
+                                            <tr>
+                                                <td valign="middle" align="center" t-attf-href="d.url">
+                                                    <t t-esc="d.url" t-attf-href="d.url"/>
+                                                </td>
+                                                <td valign="middle" align="center">
+                                                    <t t-if="d.status== 'Down'">
+                                                        <button style="width: 65px;border-radius: 20px;border:0;background-color:#fc8752;color: white;">
+                                                            Down
+                                                        </button>
+                                                    </t>
+                                                    <t t-if="d.status== 'Up'">
+                                                        <button style="width: 65px;border-radius: 20px;border:0;background-color: #00eb8b;color: white;">
+                                                            Up
+                                                        </button>
+                                                    </t>
+                                                </td>
+                                                <td valign="middle" align="center">
+                                                    <t t-esc="d.ping"/>
+                                                </td>
+                                                <td valign="middle" align="center">
+                                                    <t t-esc="d.last_check"
+                                                       t-options='{"widget": "datetime", "hide_seconds": True}'/>
+                                                </td>
+                                                <td valign="middle" align="center">
+                                                    <div>
+                                                        <div class="inner">
+                                                            <form role="form"
+                                                                  t-attf-action="/domain/#{d.id}/check_domain"
+                                                                  method="POST">
+                                                                <input type="hidden" name="csrf_token"
+                                                                       t-att-value="request.csrf_token()"/>
+                                                                <div class="form group">
+                                                                    <input type="hidden" name="website_id"
+                                                                           t-att-value="d.id"
+                                                                           id="website_id"
+                                                                           class="form-control"
+                                                                           required="required"
+                                                                    />
+                                                                </div>
+                                                                <div class="clearfix oe_login_button oe_inline"
+                                                                     align="center" style="padding-right:20px;">
+                                                                    <button type="submit" class="fa fa-rotate-left"
+                                                                            style="border-radius:12px;color:white;background:transparent;border:0;"
+                                                                            title="Refresh this domain.">
+                                                                    </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <div class="inner">
+                                                            <form role="form" t-attf-action="/domain/#{d.id}/delete"
+                                                                  method="POST">
+                                                                <input type="hidden" name="csrf_token"
+                                                                       t-att-value="request.csrf_token()"/>
+                                                                <div class="form group">
+                                                                    <input type="hidden" name="web_id"
+                                                                           t-att-value="d.id"
+                                                                           id="web_id"
+                                                                           class="form-control"
+                                                                           required="required"
+                                                                    />
+                                                                </div>
+                                                                <div class="clearfix oe_login_button oe_inline"
+                                                                     align="center">
+                                                                    <button type="submit" class="fa fa-minus"
+                                                                            style="border-radius:12px;color:white;background:transparent;border:0;"
+                                                                            title="Remove this domain.">
+                                                                    </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+</odoo>
+

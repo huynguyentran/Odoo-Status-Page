@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="landing_page_form" model="website.menu">
+        <field name="name">Landing Page</field>
+        <field name="url">/home</field>
+        <field name="parent_id" ref="website.main_menu"/>
+    </record>
+
+    <template id="landing_page" name="Landing Page">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <section class="s_text_block o_colored_level pb0 pt64" data-snippet="s_text_block" data-name="Text"
+                         style="background-image: none;">
+                    <style>
+                        table {
+                        border-collapse: separate;
+                        border-spacing: 20;
+                        }
+
+                        td {
+                        border-color: rgba(255, 255, 255, 0.5);;
+                        border-style: none solid solid none;
+                        padding: 10px;
+                        color: #ffffff;
+                        background-color: #0d74bb;
+                        }
+
+                        tr:first-child td:first-child { border-top-left-radius: 10px; }
+                        tr:first-child td:last-child { border-top-right-radius: 10px; }
+
+                        tr:last-child td:first-child { border-bottom-left-radius: 10px; }
+                        tr:last-child td:last-child { border-bottom-right-radius: 10px; }
+
+                        tr:first-child td { border-top-style: solid; }
+                        tr td:first-child { border-left-style: solid; }
+
+                        .inner
+                        {
+                        display: inline-block;
+                        }
+                    </style>
+                    <div class="s_allow_columns container">
+                        <h2 style="text-align: center;">
+                            <span style="font-weight: normal;">Welcome to our website</span>
+                        </h2>
+                        <p style="text-align: center;">
+                            <span style="font-size: 24px;">Log in to check the page's status</span>
+                        </p>
+                        <p style="text-align: center;">
+                            <a href="/private-domains"
+                               class="btn btn-fill-primary rounded-circle" data-original-title="" title=""
+                               style="border-radius:12px;color:white;background:#f37c21;border:0;padding:4px 10px 5px 10px;margin-bottom:5px;"
+                               target="_self">Your list
+                            </a>
+                        </p>
+                    </div>
+                     <div align="center" style="color:#4995cb;font-size: x-large;">
+                            <strong>
+                                 Default domains status list
+                            </strong>
+                        </div>
+                    <div align="center">
+                        <div  class="p-2 " style="border-radius:15px;width:80%; height:600px;background:#4995cb;">
+                            <div style="overflow-y: auto; max-height:550px;">
+                                <table align="center" style="width:95%;">
+                                    <thead style="padding:4px 0px 20px 0px;margin-top:5px;">
+                                        <tr valign="middle" align="center">
+                                            <td style="font-weight: bold; font-size: 1.2rem; background-color:#3163af;">
+                                                URL
+                                            </td>
+                                            <td style="font-weight: bold; font-size: 1.2rem; background-color:#3163af;">
+                                                STATUS
+                                            </td>
+                                              <td style="font-weight: bold; font-size: 1.2rem; background-color:#3163af;">
+                                                PING
+                                            </td>
+                                            <td style="font-weight: bold; font-size: 1.2rem; background-color:#3163af;">
+                                                LAST CHECK
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="request.env['status.domain'].sudo().search([('default_page', '=', 'True')])"
+                                           t-as="d">
+                                            <tr>
+                                                <td valign="middle" align="center">
+                                                    <t t-esc="d.url"/>
+                                                </td>
+                                                <td valign="middle" align="center">
+                                                    <t t-if="d.status== 'Down'">
+                                                        <button style="width: 65px;border-radius: 20px;border:0;background-color:#fc8752;color: white;">
+                                                            Down
+                                                        </button>
+                                                    </t>
+                                                    <t t-if="d.status== 'Up'">
+                                                        <button style="width: 65px;border-radius: 20px;border:0;background-color: #00eb8b;color: white;">
+                                                            Up
+                                                        </button>
+                                                    </t>
+                                                </td>
+                                                <td valign="middle" align="center">
+                                                    <t t-esc="d.ping"/>
+                                                </td>
+                                                <td valign="middle" align="center">
+                                                    <t t-esc="d.last_check"
+                                                       t-options='{"widget": "datetime", "hide_seconds": True}'/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+</odoo>

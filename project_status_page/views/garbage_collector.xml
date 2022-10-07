@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright © 2022 Novobi, LLC. See LICENSE file for full copyright and licensing details. -->
+
+<odoo>
+    <data noupdate="0">
+        <record id="ir_cron_garbage-collector" model="ir.cron">
+            <field name="name">Delete unfollowed domains</field>
+            <field name="model_id" ref="model_status_domain"/>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="code">model.garbage_collector()</field>
+            <field name="interval_number">15</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+        </record> 
+    </data>
+</odoo>

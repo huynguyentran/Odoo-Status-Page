@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_status_page_user,access_status_page_user,model_res_users,base.group_portal,1,1,1,1
+access_status_page_domain,access_status_page_domain,model_status_domain,base.group_portal,1,1,1,1
+access_status_page_user,access_status_page_user,model_res_users,base.group_user,1,1,1,1
+access_status_page_domain,access_status_page_domain,model_status_domain,base.group_user,1,1,1,1
+access_check_popup,access_check_popup,model_check_popup,base.group_user,1,1,1,1
+access_whitelist,access_whitelist,model_whitelist,base.group_user,1,0,0,0
+access_whitelist_admin,access_whitelist_admin,model_whitelist,base.group_system,1,1,1,1

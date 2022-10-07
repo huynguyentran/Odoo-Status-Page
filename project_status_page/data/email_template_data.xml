@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="email_template_for_subscribers" model="mail.template">
+            <field name="name">Email notification: Notify the status changes to user</field>
+            <field name="email_from"></field>
+            <field name="subject">Your subscribed URLs with change in status</field>
+            <field name="email_to"></field>
+            <field name="model_id" ref="model_res_users"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear user,
+                        <br/>
+                        <br/>
+                        You received this email because there are changes in your domains list:
+                        <ul>
+                            <t t-foreach="ctx.get('domains_list')" t-as="domain">
+                                <li>
+                                    <strong>
+                                        <t t-esc="domain['url']"/>
+                                    </strong>
+                                    status has been changed to
+                                    <t t-esc="domain['status']"/>
+                                </li>
+                            </t>
+                        </ul>
+                    </p>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

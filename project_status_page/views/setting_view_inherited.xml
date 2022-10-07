@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright © 2022 Novobi, LLC. See LICENSE file for full copyright and licensing details. -->
+
+<odoo>
+
+    <!--############################## ACTIONS ##############################-->
+      <record id='modify_whitelist_action' model='ir.actions.act_window'>
+        <field name="name">Whitelist</field>
+        <field name="res_model">whitelist</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!--############################## VIEWS ##############################-->
+    <record id="setting_view_form_inherited" model="ir.ui.view">
+        <field name="name">Setting view form inherited</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref ="base_setup.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='invite_users']" position="before">
+                <div id="whitelist">
+                    <h2>Whitelist</h2>
+                    <div class="row mt16 o_settings_container" name="whitelist_setting_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box" id="whitelist_setting">
+                            <div class="o_setting_right_pane">
+                                <div class="mt8">
+                                    <h3>Allowed domains</h3>
+                                    <div class="text-muted">
+                                        Allow user to follow allowed domains only
+                                    </div>
+
+<!--                                    <span aria-label="Number of white domain"/>-->
+                                    <field name='total_domain' class="w-auto pl-3 font-weight-bold"/>
+                                    <span class='o_form_label' attrs="{'invisible':[('total_domain', '&gt;', '1')]}">
+                                        Domain
+                                    </span>
+                                    <span class='o_form_label' attrs="{'invisible':[('total_domain', '&lt;=', '1')]}">
+                                        Domains
+                                    </span>
+                                    <button name="%(modify_whitelist_action)d" icon="fa-arrow-right" type="action" string="Manage whitelist" class="btn-link"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

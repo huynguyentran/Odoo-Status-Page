@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright © 2022 Novobi, LLC. See LICENSE file for full copyright and licensing details. -->
+
+
+<odoo>
+    <record id="check_popup_form" model="ir.ui.view">
+        <field name="name">Check URL Form</field>
+        <field name="model">check.popup</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="input_url" required="True" placeholder="e.g. https://www.google.com"/>
+                </group>
+                <footer>
+                    <button name="check_url" string="Check" type="object" class="btn-primary"/>
+                    <button name="add_url" string="Add" type="object" class="btn-secondary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!--############################## ACTIONS ##############################-->
+    <record id="action_check_popup_wizard" model="ir.actions.act_window">
+        <field name="name">Check URL Wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">check.popup</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="check_popup_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <!--############################## MENUS ##############################-->
+    <menuitem name="Wizard check" id="check_popup_wizard_menu" parent="status_page_base_menu"
+              action="action_check_popup_wizard"/>
+</odoo>

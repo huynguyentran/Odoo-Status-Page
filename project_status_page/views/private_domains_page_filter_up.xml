@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<odoo>
+    <template id="private_domains_page_filter_up" inherit_id="private_domains_page" primary="True">
+        <xpath expr="//tbody[1]/t[1]" position="replace">
+            <t t-foreach="request.env['status.domain'].sudo().search([('subscriber_ids', '=', user)])" t-as="d">
+                <t t-if="d.status == 'Up'">
+                    <tr>
+                        <td valign="middle" align="center">
+                            <t t-esc="d.url"/>
+                        </td>
+                        <td valign="middle" align="center">
+                            <t t-if="d.status== 'Down'">
+                                <button style="width: 65px;border-radius: 20px;border:0;background-color:#fc8752;color: white;">
+                                    Down
+                                </button>
+                            </t>
+                            <t t-if="d.status== 'Up'">
+                                <button style="width: 65px;border-radius: 20px;border:0;background-color: #00eb8b;color: white;">
+                                    Up
+                                </button>
+                            </t>
+                        </td>
+                        <td valign="middle" align="center">
+                            <t t-esc="d.ping"/>
+                        </td>
+                        <td valign="middle" align="center">
+                            <t t-esc="d.last_check"
+                               t-options='{"widget": "datetime", "hide_seconds": True}'/>
+                        </td>
+                        <td valign="middle" align="center">
+                            <div>
+                                <div class="inner">
+                                    <form role="form"
+                                          t-attf-action="/domain/#{d.id}/check_domain"
+                                          method="POST">
+                                        <input type="hidden" name="csrf_token"
+                                               t-att-value="request.csrf_token()"/>
+                                        <div class="form group">
+                                            <input type="hidden" name="website_id"
+                                                   t-att-value="d.id"
+                                                   id="website_id"
+                                                   class="form-control"
+                                                   required="required"
+                                            />
+                                        </div>
+                                        <div class="clearfix oe_login_button oe_inline"
+                                             align="center">
+                                            <button type="submit" class="fa fa-rotate-left"
+                                                    style="border-radius:12px;color:white;background:transparent;border:0;"
+                                                    title="Refresh this domain.">
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="inner">
+                                    <form role="form" t-attf-action="/domain/#{d.id}/delete"
+                                          method="POST">
+                                        <input type="hidden" name="csrf_token"
+                                               t-att-value="request.csrf_token()"/>
+                                        <div class="form group">
+                                            <input type="hidden" name="web_id"
+                                                   t-att-value="d.id"
+                                                   id="web_id"
+                                                   class="form-control"
+                                                   required="required"
+                                            />
+                                        </div>
+                                        <div class="clearfix oe_login_button oe_inline"
+                                             align="center">
+                                            <button type="submit" class="fa fa-trash"
+                                                    style="border-radius:12px;color:white;background:transparent;border:0;"
+                                                    title="Remove this domain.">
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </t>
+            </t>
+        </xpath>
+    </template>
+</odoo>

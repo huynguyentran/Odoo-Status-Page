@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright © 2022 Novobi, LLC. See LICENSE file for full copyright and licensing details. -->
+
+<odoo>
+    <!--############################## VIEWS ##############################-->
+
+     <record id="status_page_domain_view_tree" model="ir.ui.view">
+        <field name="name">Status page domain list</field>
+        <field name="model">status.domain</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="url"/>
+                <field name="ping"/>
+                <field name="status"/>
+                <field name="last_check"/>
+                <field name="total_followers"/>
+                <field name="default_page"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="status_page_domain_view_form" model="ir.ui.view">
+        <field name="name">Status page domain form</field>
+        <field name="model">status.domain</field>
+        <field name="arch" type="xml">
+            <form string="domains">
+                <sheet>
+                    <group>
+                          <label for="url" string="URL"/>
+                          <h2>
+                              <field name="url" placeholder="e.g https://www.google.com"/>
+                          </h2>
+                        <group>
+                            <button name="send_request" type="object" class="btn-danger" string="Check"/>
+                        </group>
+                    </group>
+                        <label for="ping" string="Ping"/>
+                        <h2>
+                            <field name="ping"/>
+                        </h2>
+                            <label for="status" string="Status"/>
+                        <h2>
+                            <field name="status"/>
+                        </h2>
+                            <label for="last_check" string="Last Check"/>
+                        <h2>
+                            <field name="last_check"/>
+                        </h2>
+                        <label for="status" string="Default Page?"/>
+                         <h2>
+                            <field name="default_page"/>
+                        </h2>
+                            <label for="total_followers" string="Total Followers"/>
+                        <h2>
+                            <field name="total_followers"/>
+                        </h2>
+                            <label for="subscriber_ids" string="Subscribers"/>
+                        <h2>
+                            <field name="subscriber_ids"/>
+                        </h2>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!--############################## ACTIONS ##############################-->
+      <record id='status_page_domains_action' model='ir.actions.act_window'>
+        <field name="name">Domain</field>
+        <field name="res_model">status.domain</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!--############################## MENUS ##############################-->
+    <menuitem name="Domains" id="status_page_domains_menu" parent="status_page_base_menu" action="status_page_domains_action"/>
+
+</odoo>
